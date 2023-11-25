@@ -1,7 +1,4 @@
-    /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+    
 package com.apirest.service;
 
 import com.apirest.model.Veiculo;
@@ -14,7 +11,7 @@ import org.springframework.data.domain.Sort;
 
 /**
  *
- * @author usuario
+ * @author Samuel
  */
 @Service
 public class VeiculoService {
@@ -42,7 +39,7 @@ public class VeiculoService {
         return this.repository.count() == 0;    
     }
     
-    
+    //Metodo que seleciona um veiculo pelo seu ID
     public Veiculo seleciona(Long id) {
         Veiculo veiculo =  this.repository.findById(id).get();
         if(veiculo != null){
@@ -51,18 +48,28 @@ public class VeiculoService {
         return null;
     }
     
+    //Lista todos os elementos
     public List<Veiculo> listagem(){
         return this.repository.findAll(Sort.by(Sort.Direction.ASC, "modelo","vaga","placa","cor"));
     }
     
-    public List<Veiculo> buscaPorTermo(String termo){
-        return this.repository.findByPlacaContaining(termo);
+    //Metodo que busca veiculo por placa
+    public List<Veiculo> buscaPorPlaca(String placa){
+        try {
+            List<Veiculo> veiculo = this.repository.findByPlacaContaining(placa); 
+            return veiculo;
+        } catch (Exception e) {
+            String erro = "Veiculo não encontrado"+e.getMessage();
+            System.out.println(erro);
+            return null;
+        }
+      
     }
     
     //Deleta todos os elementos da lista
-    @Transactional
-    public void deletarListaDeObjetos(List<Veiculo> veiculos) {
-        repository.deleteAll(veiculos);
+    public void deletarRegistros() {
+       this.repository.deleteAll();
     }
     
+ 
 }

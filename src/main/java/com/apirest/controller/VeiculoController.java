@@ -7,6 +7,7 @@ package com.apirest.controller;
 import com.apirest.model.Vaga;
 import com.apirest.model.Veiculo;
 import com.apirest.service.VeiculoService;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,6 +38,17 @@ public class VeiculoController {
         return this.service.listagem();
     }
     
+    
+    @GetMapping("/get/{placa}")
+    public List<Veiculo> getVeiculoTermo(@PathVariable("placa") String placa){
+        if(placa != null){
+            List<Veiculo> veiculo = this.service.buscaPorPlaca(placa);
+            return veiculo;
+        }
+        
+        return null;   
+    }
+    
     @PostMapping("/add")
      public String insereVaga(@RequestBody Veiculo veiculo){
          boolean jaExiste = this.service.existeVeiculoComId(veiculo.getId());
@@ -57,11 +69,16 @@ public class VeiculoController {
         return null;
     }
     
-    @GetMapping("/teste")
-    public Boolean tabelaVazia(){
-        return this.service.tabelaVazia();
+    @GetMapping("/tabela")
+    public String tabelaVazia(){
+        boolean bool = this.service.tabelaVazia();
+        if(bool == true){
+            return "Tabela Vazia !!";
+        }else{
+            return "Tabela não está vazia !!";  
+        }
+        
     }
-    
     
     @DeleteMapping("/delete{id}")
     public String deleteVeiculo(@PathVariable("id") Long id){
@@ -74,5 +91,21 @@ public class VeiculoController {
 
     }
     
+    @DeleteMapping("/delete/all")
+    @Transactional
+    public String excluiRegistros(){
+        boolean bool = this.service.tabelaVazia();
+        if(!bool == true){
+            try {
+                this.service.deletarRegistros();
+                return "Registros excluidos";
+            } catch (Exception e) {
+                e.printStackTrace();
+               return "Erro ao excluir os registros"+e.getMessage();
+            }
+        }else{
+            return "Tabela está vazia";
+        }
+    }
    
 }

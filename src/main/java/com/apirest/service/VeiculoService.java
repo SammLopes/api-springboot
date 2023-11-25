@@ -31,7 +31,11 @@ public class VeiculoService {
    
     //verifica se já existe um veiculo com id
     public boolean existeVeiculoComId(Long id) {
-        return repository.existsById(id);
+        if(repository.existsById(id)){
+            return true;
+        }else{    
+        return false;
+        }
     }
 
     //Verifica se a tabela está vazia
@@ -64,6 +68,11 @@ public class VeiculoService {
             return null;
         }
       
+    }
+    
+    //Busca por id
+    public Veiculo buscaVeiculoId(long id){
+        return this.seleciona(id);
     }
     
     //Deleta todos os elementos da lista

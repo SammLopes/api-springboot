@@ -5,9 +5,13 @@
 package com.apirest.controller;
 
 import com.apirest.model.Vaga;
+import com.apirest.model.Veiculo;
 import com.apirest.service.VagaService;
+import com.apirest.service.VeiculoService;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +30,8 @@ public class VagaController {
     @Autowired
     VagaService service;
     
+    @Autowired
+    VeiculoService serviceVeiculo;
     
     @GetMapping("/get/list")
     public List<Vaga> getVagas(){
@@ -33,9 +39,19 @@ public class VagaController {
     }
     
     @PostMapping("/add")
-    public Vaga insereVaga(@RequestBody Vaga vaga){
+    public String insereVaga(@RequestBody Vaga vaga){
+     
         if(vaga != null){
-            this.service.salva(vaga);
+            boolean bool = this.service.existeVagaComId(vaga.getId());
+             if(!bool == true){
+                if(vaga.isOcupado() == true){
+                    vaga.setOcupado(false);
+                    this.service.salva(vaga);
+                    return "Vaga cadastrada";
+                }
+             }else{
+                 return "Vaga já cadastrada";
+             }
         }
         return null;
     }
@@ -48,8 +64,47 @@ public class VagaController {
         return null;
     }
     
+    @PostMapping("/add/veiculo{id}")
+    public String addVeiculoVaga(@PathVariable("id") Long idVeiculo, @RequestBody Vaga vaga){
+         List<Veiculo> veiculos = new ArrayList<>();
+        boolean existeVeiculo =  this.serviceVeiculo.existeVeiculoComId(idVeiculo);
+        boolean existeVaga = this.service.existeVagaComId(vaga.getId());
+        if(existeVeiculo && existeVaga){
+            Veiculo veiculo =  this.serviceVeiculo.buscaVeiculoId(idVeiculo);
+            veiculos.add(veiculo);
+            vaga.setOcupado(true);
+            vaga.setVeiculos(veiculos);
+            return "Veiculo adicionado a vaga";
+        }
+        return "Vaga ou veiculos não cadastrados";
+    }
+    
     @DeleteMapping("/delete{id}")
     public Vaga exclui(@PathVariable Long id){
+        if(id != null && !this.service.tabelaVazia()){
+            boolean bool = this.service.existeVagaComId(id);
+            if(bool == true){
+                return this.service.exclui(id);
+            }
+        }
         return null;
     }
+    
+    @DeleteMapping("/delete/all")
+    @Transactional
+    public String deletaRegistros(){
+        boolean bool = this.service.tabelaVazia();
+        try {
+            if(!bool == true){
+                this.service.deletaRegistros();
+                return "Todos os registros deletados";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Ocorreu um erro ao tentar deletar os registros"+e.getMessage();
+        }
+        return null;
+    }
+    
+    
 }

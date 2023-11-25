@@ -25,6 +25,20 @@ public class VagaService {
         return this.repository.save(vaga);
     }
     
+    //verifica se já existe uma vaga com id
+    public boolean existeVagaComId(Long id) {
+        if(repository.existsById(id)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    //Verifica se a tabela está vazia
+    public boolean tabelaVazia(){
+        return this.repository.count() == 0;
+    }
+    
     public Vaga seleciona(Long id){
         Vaga vaga = this.repository.findById(id).get();
         if(vaga != null){
@@ -45,4 +59,7 @@ public class VagaService {
         return this.repository.findAll(Sort.by(Sort.Direction.ASC, "id", "ocupado"));
     }
     
+    public void deletaRegistros(){
+        this.repository.deleteAll();
+    }
 }

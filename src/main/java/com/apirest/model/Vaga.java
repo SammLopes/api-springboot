@@ -7,7 +7,9 @@ package com.apirest.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,9 +34,8 @@ public class Vaga {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; 
-    private boolean ocupado;
-    @OneToMany(mappedBy = "vaga")
-    //@JsonIgnore
+    private boolean ocupado = false;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "vaga")
     private List<Veiculo> veiculos;
    
 }

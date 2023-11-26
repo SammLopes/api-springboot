@@ -20,6 +20,7 @@ import lombok.Setter;
  * @author usuario
  */
 
+//Entidade Veiculo
 
 @Getter
 @Setter
@@ -33,7 +34,6 @@ public class Veiculo {
     private String modelo;
     private String placa;
     private String cor;
-    
     @ManyToOne
     @JoinColumn(name = "vaga_id")
     @JsonIgnore

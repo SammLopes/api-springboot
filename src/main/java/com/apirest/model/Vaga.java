@@ -25,6 +25,8 @@ import lombok.Setter;
  * @author usuario
  */
 
+//Entidade Vaga
+
 @Entity
 @Getter
 @Setter
@@ -35,7 +37,7 @@ public class Vaga {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; 
     private boolean ocupado = false;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "vaga")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "vaga")//Os dados relacionado serão carregado imediatamente junto com entidade pai
     private List<Veiculo> veiculos;
    
 }

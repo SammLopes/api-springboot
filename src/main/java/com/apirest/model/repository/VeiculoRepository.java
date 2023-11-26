@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 /**
  *
  * @author usuario
+ * Repositorio da entidade Veiculo
  */
 
 @Repository

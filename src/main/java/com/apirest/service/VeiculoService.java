@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 /**
  *
  * @author Samuel
+ * 
+ * Classe de serviço da entidade Veiculo
  */
 @Service
 public class VeiculoService {

@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+//Controller da entidade Vaga
+
 @CrossOrigin    
 @RestController
 @RequestMapping("/vaga")
@@ -33,11 +35,13 @@ public class VagaController {
     @Autowired
     VeiculoService serviceVeiculo;
     
+    //Metodo GET que lista todos os registros da tabela
     @GetMapping("/get/list")
     public List<Vaga> getVagas(){
         return this.service.listagem();
     }
     
+    //Metodo POST que recebe um objeto e adiciona ele no banco
     @PostMapping("/add")
     public String insereVaga(@RequestBody Vaga vaga){
      
@@ -56,6 +60,7 @@ public class VagaController {
         return null;
     }
     
+    //Metodo PUT que atualiza 
     @PutMapping("/update")
     public Vaga atualiza(@RequestBody Vaga vaga){
         if(vaga.getId() != null){
@@ -64,8 +69,9 @@ public class VagaController {
         return null;
     }
     
+    //Metodo POST que adiciona um veiculo a uma vaga pelo seu id
     @PostMapping("/add/veiculo{idVe}-vaga{idVa}")
-    public /*String*/ Vaga addVeiculoVaga(@PathVariable("idVe") Long idVeiculo, @PathVariable("idVa") Long idVaga){
+    public  Vaga addVeiculoVaga(@PathVariable("idVe") Long idVeiculo, @PathVariable("idVa") Long idVaga){
         List<Veiculo> veiculos = new ArrayList<>();
         boolean existeVeiculo =  this.serviceVeiculo.existeVeiculoComId(idVeiculo);
         boolean existeVaga = this.service.existeVagaComId(idVaga);
@@ -84,6 +90,7 @@ public class VagaController {
         return null;
     }
     
+    //Metodo DELETE onde recebe o id da vaga para exclusão da vaga
     @DeleteMapping("/delete{id}")
     public Vaga exclui(@PathVariable Long id){
         if(id != null && !this.service.tabelaVazia()){
@@ -95,6 +102,8 @@ public class VagaController {
         return null;
     }
     
+    //Rota que deleta todos os registros
+    //@Transactional Se a transação for concluída com sucesso, as alterações no banco de dados devem ser confirmadas. Se ocorrer uma exceção, a transação deve ser revertida.
     @DeleteMapping("/delete/all")
     @Transactional
     public String deletaRegistros(){

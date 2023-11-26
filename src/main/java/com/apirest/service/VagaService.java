@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 /**
  *
  * @author usuario
+ * Classe de serviço da entidade Vaga
  */
 @Service
 public class VagaService {
@@ -21,6 +22,7 @@ public class VagaService {
     @Autowired
     VagaRepository repository;
     
+    //Salva uma entidade vaga no banco de dados
     public Vaga salva(Vaga vaga){
         return this.repository.save(vaga);
     }
@@ -39,6 +41,7 @@ public class VagaService {
         return this.repository.count() == 0;
     }
     
+    //Seleciona uma vaga de acordo com o id, retornando uma vaga
     public Vaga seleciona(Long id){
         Vaga vaga = this.repository.findById(id).get();
         if(vaga != null){
@@ -52,6 +55,7 @@ public class VagaService {
         return this.seleciona(id);
     }
     
+    //Exclui uma vaga de acordo com o id vaga
     public Vaga exclui(Long id){
         Vaga vaga =  this.seleciona(id);
         if(vaga != null){
@@ -60,10 +64,12 @@ public class VagaService {
         return vaga;
     }
     
+    //Lista todos os registros com de forma ascendente
     public List<Vaga> listagem(){
         return this.repository.findAll(Sort.by(Sort.Direction.ASC, "id", "ocupado"));
     }
     
+    //Metodo que deleta todos os registros da tabela
     public void deletaRegistros(){
         this.repository.deleteAll();
     }

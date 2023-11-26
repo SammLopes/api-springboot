@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  *
  * @author usuario
+ * Repositorio da entidade Vaga
  */
 public interface VagaRepository  extends JpaRepository<Vaga, Long>{
    

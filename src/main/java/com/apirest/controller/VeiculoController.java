@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  *
  * @author usuario
+ * 
+ * Classe controller para entidade Veiculo
  */
 @CrossOrigin
 @RestController
@@ -32,13 +34,13 @@ public class VeiculoController {
     @Autowired
     VeiculoService service; 
     
-   
+    //Retorna uma lista de veiculos registrados
     @GetMapping("/get/list")
     public List<Veiculo> getVeiculo(){
         return this.service.listagem();
     }
     
-    
+    //Rota GET que retorna um veiculo pela placa
     @GetMapping("/get/{placa}")
     public List<Veiculo> getVeiculoTermo(@PathVariable("placa") String placa){
             if(placa != null ){
@@ -50,6 +52,7 @@ public class VeiculoController {
         return null;   
     }
     
+    //Rota POST que adiciona um veiculo no banco
     @PostMapping("/add")
      public String insereVaga(@RequestBody Veiculo veiculo){
          boolean jaExiste = this.service.existeVeiculoComId(veiculo.getId());
@@ -61,6 +64,7 @@ public class VeiculoController {
         }
     }
      
+    //Rota PUT que atualiza o veiculo
     @PutMapping("/update")
     public Veiculo atualizaVeiculo(Veiculo veiculo){
         Veiculo veiculoId =  this.service.seleciona(veiculo.getId());
@@ -70,6 +74,7 @@ public class VeiculoController {
         return null;
     }
     
+    //Rota GET que retorna se a tabela está vazia
     @GetMapping("/tabela")
     public String tabelaVazia(){
         boolean bool = this.service.tabelaVazia();
@@ -81,6 +86,7 @@ public class VeiculoController {
         
     }
     
+    //Rota DELETE que deleta um carro pelo seu ID
     @DeleteMapping("/delete{id}")
     public String deleteVeiculo(@PathVariable("id") Long id){
         if(id != null && !this.service.tabelaVazia()){
@@ -92,6 +98,7 @@ public class VeiculoController {
 
     }
     
+    //Rota que DELETA todos os registros do banco
     @DeleteMapping("/delete/all")
     @Transactional
     public String excluiRegistros(){

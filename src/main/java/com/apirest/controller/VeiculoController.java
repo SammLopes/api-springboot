@@ -41,11 +41,12 @@ public class VeiculoController {
     
     @GetMapping("/get/{placa}")
     public List<Veiculo> getVeiculoTermo(@PathVariable("placa") String placa){
-        if(placa != null){
-            List<Veiculo> veiculo = this.service.buscaPorPlaca(placa);
-            return veiculo;
-        }
-        
+            if(placa != null ){
+                if(!this.service.tabelaVazia()){
+                List<Veiculo> veiculo = this.service.buscaPorPlaca(placa);
+                return veiculo;
+            }
+        } 
         return null;   
     }
     

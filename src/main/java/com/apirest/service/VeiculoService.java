@@ -60,8 +60,8 @@ public class VeiculoService {
     //Metodo que busca veiculo por placa
     public List<Veiculo> buscaPorPlaca(String placa){
         try {
-            List<Veiculo> veiculo = this.repository.findByPlacaContaining(placa); 
-            return veiculo;
+            List<Veiculo> veiculos = this.repository.findByPlacaContaining(placa); 
+            return veiculos;
         } catch (Exception e) {
             String erro = "Veiculo não encontrado"+e.getMessage();
             System.out.println(erro);

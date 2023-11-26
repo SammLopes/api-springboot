@@ -16,5 +16,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VeiculoRepository extends JpaRepository<Veiculo, Long> {
-    public List<Veiculo> findByPlacaContaining(String termo);    
+    public List<Veiculo> findByPlacaContaining(String placa);    
 }

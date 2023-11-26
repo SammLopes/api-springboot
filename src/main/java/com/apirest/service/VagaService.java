@@ -47,6 +47,11 @@ public class VagaService {
         return null;
     }
     
+    //Retoran o objeto com o id
+    public Vaga buscaVagaId(Long id){
+        return this.seleciona(id);
+    }
+    
     public Vaga exclui(Long id){
         Vaga vaga =  this.seleciona(id);
         if(vaga != null){

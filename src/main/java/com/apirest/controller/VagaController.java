@@ -64,19 +64,24 @@ public class VagaController {
         return null;
     }
     
-    @PostMapping("/add/veiculo{id}")
-    public String addVeiculoVaga(@PathVariable("id") Long idVeiculo, @RequestBody Vaga vaga){
-         List<Veiculo> veiculos = new ArrayList<>();
+    @PostMapping("/add/veiculo{idVe}-vaga{idVa}")
+    public /*String*/ Vaga addVeiculoVaga(@PathVariable("idVe") Long idVeiculo, @PathVariable("idVa") Long idVaga){
+        List<Veiculo> veiculos = new ArrayList<>();
         boolean existeVeiculo =  this.serviceVeiculo.existeVeiculoComId(idVeiculo);
-        boolean existeVaga = this.service.existeVagaComId(vaga.getId());
+        boolean existeVaga = this.service.existeVagaComId(idVaga);
         if(existeVeiculo && existeVaga){
             Veiculo veiculo =  this.serviceVeiculo.buscaVeiculoId(idVeiculo);
+            Vaga vaga = this.service.buscaVagaId(idVaga);
             veiculos.add(veiculo);
+            veiculo.setVaga(vaga);
             vaga.setOcupado(true);
             vaga.setVeiculos(veiculos);
-            return "Veiculo adicionado a vaga";
+            this.service.salva(vaga);
+            return vaga;
+            //return "Veiculo adicionado a vaga";
         }
-        return "Vaga ou veiculos não cadastrados";
+        //return "Vaga ou veiculos não cadastrados";
+        return null;
     }
     
     @DeleteMapping("/delete{id}")
